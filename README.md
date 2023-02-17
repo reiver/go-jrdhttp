@@ -1,6 +1,6 @@
 # go-jrdhttp
 
-Package **jrdhttp** provides tools for writing **JSON Resource Descriptor** (**JRD**) over HTTP.
+Package **jrdhttp** provides tools for writing **JSON Resource Descriptor** (**JRD**) over HTTP, for the Go programming language.
 
 This package is meant to be used with the built-in Go `"net/http"` package.
 
