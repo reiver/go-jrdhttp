@@ -41,17 +41,54 @@ func TestTeapot(t *testing.T) {
 		}
 	}
 
-	var contentType string
+	var headers http.Header
 	{
-		var headers http.Header = rr.Header()
+		headers = rr.Header()
 		if nil == headers {
 			t.Error("did not expect headers to be nil, but actually was")
 			return
 		}
+	}
 
+	{
+		headerList, found := headers["Access-Control-Allow-Origin"]
+		if !found {
+			t.Error("Access-Control-Allow-Origin not header found")
+			return
+		}
+
+		{
+			const expected int = 1
+			var   actual   int = len(headerList)
+
+			if expected != actual {
+				t.Error("The actual number of Access-Control-Allow-Origin headers is not what was expected.")
+				t.Logf("EXPECTED: %d", expected)
+				t.Logf("ACTUAL:   %d", actual)
+				return
+			}
+		}
+
+		header := headerList[0]
+
+		{
+			const expected string = "*"
+			var   actual   string = header
+
+			if expected != actual {
+				t.Error("The actual value for Access-Control-Allow-Origin is not what was expected")
+				t.Logf("EXPECTED: %q", expected)
+				t.Logf("ACTUAL:   %q", actual)
+				return
+			}
+		}
+	}
+
+	var contentType string
+	{
 		contentTypes, found := headers["Content-Type"]
 		if !found {
-			t.Error("Content-Type header found")
+			t.Error("Content-Type header not found")
 			return
 		}
 
@@ -59,12 +96,12 @@ func TestTeapot(t *testing.T) {
 			const expected int = 1
 			var   actual   int = len(contentTypes)
 
-		if expected != actual {
-			t.Error("The actual number of Content-Type headers is not what was expected.")
-			t.Logf("EXPECTED: %d", expected)
-			t.Logf("ACTUAL:   %d", actual)
-			return
-		}
+			if expected != actual {
+				t.Error("The actual number of Content-Type headers is not what was expected.")
+				t.Logf("EXPECTED: %d", expected)
+				t.Logf("ACTUAL:   %d", actual)
+				return
+			}
 		}
 
 		contentType = contentTypes[0]
