@@ -7,9 +7,6 @@ import (
 )
 
 func Err(rw http.ResponseWriter, httpStatusCode uint) {
-	_err(rw, httpStatusCode)}
-
-func _err(rw http.ResponseWriter, httpStatusCode uint) {
 	if nil == rw {
 		return
 	}
